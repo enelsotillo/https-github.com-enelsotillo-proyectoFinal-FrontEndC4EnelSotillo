@@ -1,0 +1,20 @@
+src: carpecta raiz
+public: Esta carpeta contiene los archivos estáticos de la aplicación, como imágenes, CSS y JS.
+
+main: Este archivo se encarga de cargar el JavaScript de la aplicación.
+
+Dentro de la carpeta src, hay una estructura típica de carpetas y archivos que se utilizan para organizar el código:
+
+components: Esta carpeta contiene todos los componentes de la aplicación.
+
+hooks: Esta carpeta contiene cualquier hook personalizado que se haya creado.
+
+lib: Esta carpeta contiene cualquier código de utilidad o librería que se quiera compartir entre diferentes componentes.
+
+pages: Esta carpeta contiene las páginas de la aplicación.
+
+styles: Esta carpeta contiene los estilos de la aplicación.
+
+main.jsx: Este es el archivo principal de la aplicación, se encarga de cargar los componentes y las dependencias de la aplicación. 
+
+app.jsx: Este archivo es el componente principal de la aplicación, se encarga de renderizar la estructura básica.
