@@ -1,7 +1,8 @@
 import { createBrowserRouter } from "react-router-dom";
 
-//vistas
+//vistas o rutas 
 import Inicio from "./views/Inicio.jsx";
+import Ingresar from "./views/ingresar.jsx";
 const Rutas = createBrowserRouter([
     {
         path: "/",
@@ -9,7 +10,7 @@ const Rutas = createBrowserRouter([
     },
     {
         path: "/ingresar",
-        element: <div>Logiado!</div>,
+        element: <Ingresar/>,
     },
     {
         path: "/registrarse",
