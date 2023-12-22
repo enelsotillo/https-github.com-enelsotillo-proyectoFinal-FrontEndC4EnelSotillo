@@ -1,10 +1,39 @@
+import { useState, useEffect } from 'react';
+import { Card, Button } from 'react-bootstrap';
+import axios from 'axios';
+import { useAuthContext } from '../context/AuthContext.jsx';
 
-import { Card } from 'react-bootstrap';
+//components
+import TablaDedatos from '../components/TablaDeDatos.jsx';
+
 
 const Inicio = () => {
+ 
+  const [lista, setLista] = useState([]);
+  const authContext = useAuthContext();
 
-  return (
-    <Card.Body> pagina de inicio...</Card.Body>
+  const cargarLista = async () => {
+    //conexio con  en BackEnd de Express
+    const response =  await axios.get('http://localhost:3000/usuarios');
+    if( response.status === 200){
+
+      setLista(response.data);
+
+    }
+    
+  }
+
+useEffect(() => {
+cargarLista();
+console.log(authContext);
+}, []);
+
+return (
+    <Card.Body> pagina de inicio...
+      
+        < TablaDedatos lista={lista} />
+
+    </Card.Body>
   )
 }
 
