@@ -1,19 +1,27 @@
+import { TraeDatosDelUsuarioPorId } from './../utils/llamando.js';
+
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Alert } from 'react-bootstrap';
 
-const Cargar = () => {
 
+
+
+const FormularioEditar = (props) => {
+  const { id } = props;
+  const url = 'http://localhost:3000/usuario';
   const navigate = useNavigate();
+
   const [usuario, setUsuario] = useState('');
   const [nombre, setNombre] = useState('');
   const [apellido, setApellido] = useState('');
   const [password, setPassword] = useState('');
+
   const [DesHabilitaButton, SetDesHabilitaButton] = useState(false);
   const [errores, setErrores] = useState({});
 
@@ -51,45 +59,65 @@ const Cargar = () => {
       misErrores.password = 'Debe introducir al menos un password';
     }
 
-    
-      setErrores(misErrores);
 
-      if (Object.entries(misErrores).length === 0) {
-        SetDesHabilitaButton(true);
-       
+    setErrores(misErrores);
+
+    if (Object.entries(misErrores).length === 0) {
+      SetDesHabilitaButton(true);
+
       /* enviar datos al BackEnd*/
       await enviarDatos();
 
-      }
+    }
   }
 
-  /* Preparar datos para el BackEnd*/
+  /* Preparar datos para enviar al BackEnd*/
   const enviarDatos = async () => {
-    const url = 'http://localhost:3000/usuario';
+
     const datos = {
+      id: id,
       usuario: usuario,
       nombre: nombre,
       apellido: apellido,
       password: password,
     }
     try {
-        const respuesta = await axios.post(url, datos);
+      const respuesta = await axios.put(url, datos);
 
-        if (respuesta.status === 200) {
+      if (respuesta.status === 200) {
 
-          return navigate('/');
+        return navigate('/');
 
-        } else {
-          setErrores({ error: 'Error inesperado' })
-        }
+      } else {
+        setErrores({ error: 'Error inesperado' })
+      }
 
     } catch (error) {
-      setErrores({ error: 'Ocurrio un error interno de servidor '})
+      setErrores({ error: 'Ocurrio un error interno de servidor ' })
     }
 
     SetDesHabilitaButton(false);
 
   }
+
+  const TraerDatos = async () => {
+
+    const respuesta = await TraeDatosDelUsuarioPorId(id)
+    if (respuesta) {
+      setUsuario(datos.usuario);
+      setNombre(datos.nombre);
+      setApellido(datos.apellido);
+      setPassword(datos.password);
+    } else {
+      setErrores({ error: 'Error inesperado al optener el usuario' })
+      SetDesHabilitaButton(true);
+    }
+  }
+
+  useEffect(() => {
+
+    TraerDatos();
+  }, [])
 
   /* Formulario de*/
   return (
@@ -100,7 +128,7 @@ const Cargar = () => {
           Usuario
         </Form.Label>
         <Col sm="10">
-          <Form.Control type='text' onInput={cambiarUsuario} />
+          <Form.Control type='text' onInput={cambiarUsuario} defaultValue={usuario} />
           {
             errores.usuario && (<span style={{ color: "red" }}>{errores.usuario}</span>)
           }
@@ -113,7 +141,7 @@ const Cargar = () => {
           Nombre
         </Form.Label>
         <Col sm="10">
-          <Form.Control type='text' onInput={cambiarNombre} />
+          <Form.Control type='text' onInput={cambiarNombre} defaultValue={nombre} />
           {
             errores.nombre && (<span style={{ color: "red" }}>{errores.nombre}</span>)
           }
@@ -125,7 +153,7 @@ const Cargar = () => {
           Apellido
         </Form.Label>
         <Col sm="10">
-          <Form.Control type="text" onInput={cambiarApellido} />
+          <Form.Control type="text" onInput={cambiarApellido} defaultValue={apellido} />
           {
             errores.apellido && (<span style={{ color: "red" }}>{errores.apellido}</span>)
           }
@@ -137,24 +165,24 @@ const Cargar = () => {
           Password
         </Form.Label>
         <Col sm="10">
-          <Form.Control type='password' onInput={cambiarPassword} />
+          <Form.Control type='password' onInput={cambiarPassword} defaultValue={password} />
           {
             errores.password && (<span style={{ color: "red" }}>{errores.password}</span>)
           }
         </Col>
       </Form.Group>
       {
-        errores.error && ( <Alert variant={"warning"}> {errores.error} </Alert>
+        errores.error && (<Alert variant={"warning"}> {errores.error} </Alert>
         )
       }
 
 
       <Button variant="primary" onClick={verificarDatos} disabled={DesHabilitaButton}>Enviar</Button>
-      
-     
-      
+
+
+
     </Form>
   );
 }
 
-export default Cargar;
+export default FormularioEditar;

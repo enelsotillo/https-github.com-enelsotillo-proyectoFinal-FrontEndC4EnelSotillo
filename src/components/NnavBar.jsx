@@ -9,7 +9,7 @@ const MyNavbar =() => {
           <Navbar.Brand href="/">Arg Programa</Navbar.Brand>
           <Nav className="me-auto">
             <Nav.Link href="/">Inicio</Nav.Link>
-            <Nav.Link href="/ingresar">Ingresar</Nav.Link>
+            <Nav.Link href="/cargar">Cargar Datos</Nav.Link>
             <Nav.Link href="/registrarse">Registrarse</Nav.Link>
           </Nav>
         </Container>
