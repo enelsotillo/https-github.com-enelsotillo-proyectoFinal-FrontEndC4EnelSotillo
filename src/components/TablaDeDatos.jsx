@@ -3,9 +3,8 @@ import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import { useNavigate } from "react-router-dom";
 
-
 const TablaDedatos = (props) => {
-    const { lista } = props;
+    const { lista, usuario } = props;
     const navigate = useNavigate();
     //metodos
     const Ver = (id) => {
@@ -27,8 +26,8 @@ const TablaDedatos = (props) => {
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Nombre</th>
-                    <th>Apellido</th>
+                    <th>Titulo</th>
+                    <th>Autor</th>
                     <th>Acción</th>
                 </tr>
             </thead>
@@ -37,13 +36,19 @@ const TablaDedatos = (props) => {
                     lista.map((item, key) => (
                         <tr key={key}>
                             <td>{(key + 1)}</td>
-                            <td>{item.nombre}</td>
-                            <td>{item.apellido}</td>
+                            <td>{item.titulo}</td>
+                            <td>{item.autor.nombre + ' ' + item.autor.apellido}</td>
                             <td>
                                 <ButtonGroup style={{ maxWidth: '30px' }}>
                                     <Button variant="success" onClick={() => Ver(item._id)}>Ver</Button>
-                                    <Button variant="primary" onClick={() => Edit(item._id)}>Edit</Button>
-                                    <Button variant="danger" onClick={() => Delete(item._id)}>Delete</Button>
+                                    {
+                                       usuario && (usuario.id === item.autor._id) && (
+                                            <>
+                                                <Button variant="primary" onClick={() => Edit(item._id)}>Edit</Button>
+                                                <Button variant="danger" onClick={() => Delete(item._id)}>Delete</Button>
+                                            </>
+                                        )
+                                    }
 
                                 </ButtonGroup>
                             </td>

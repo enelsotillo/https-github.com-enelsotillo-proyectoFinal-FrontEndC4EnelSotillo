@@ -7,7 +7,7 @@ import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import { Alert } from 'react-bootstrap';
 
-const Cargar = () => {
+const FormularioRegistrarUsuario = () => {
 
   const navigate = useNavigate();
   const [usuario, setUsuario] = useState('');
@@ -157,4 +157,4 @@ const Cargar = () => {
   );
 }
 
-export default Cargar;
+export default FormularioRegistrarUsuario;

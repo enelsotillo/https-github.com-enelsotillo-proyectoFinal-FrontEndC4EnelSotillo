@@ -7,7 +7,7 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-const Delete = () => {
+const DeleteComentario = () => {
     
     const [error, setError] = useState(false);
     const [DesHabilitaButton, SetDesHabilitaButton] = useState(false);
@@ -23,7 +23,7 @@ const Delete = () => {
         SetDesHabilitaButton(true);
 
         try {
-            const url = 'http://localhost:3000/post';
+            const url = 'http://localhost:3000/coment/';
             const datos = {id: id}
             const respuesta = await axios.delete(url, {data: { id: id } } );
             console.log(respuesta.data);
@@ -60,4 +60,4 @@ const Delete = () => {
     )
 }
 
-export default Delete;
+export default DeleteComentario;

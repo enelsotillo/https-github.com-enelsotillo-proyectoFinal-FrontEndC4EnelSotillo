@@ -10,11 +10,12 @@ import TablaDedatos from '../components/TablaDeDatos.jsx';
 const Inicio = () => {
  
   const [lista, setLista] = useState([]);
-  const authContext = useAuthContext();
+  
+  const { usuario } = useAuthContext();
 
   const cargarLista = async () => {
     //conexio con  en BackEnd de Express
-    const response =  await axios.get('http://localhost:3000/usuarios');
+    const response =  await axios.get('http://localhost:3000/posts');
     if( response.status === 200){
 
       setLista(response.data);
@@ -25,13 +26,12 @@ const Inicio = () => {
 
 useEffect(() => {
 cargarLista();
-console.log(authContext);
 }, []);
 
 return (
-    <Card.Body> pagina de inicio...
-      
-        < TablaDedatos lista={lista} />
+    <Card.Body> 
+      {usuario ? ('Bienvenido '+ usuario.nombre+' '+usuario.apellido ) : 'No inicio sesión' }
+        < TablaDedatos lista={lista} usuario={usuario} />
 
     </Card.Body>
   )

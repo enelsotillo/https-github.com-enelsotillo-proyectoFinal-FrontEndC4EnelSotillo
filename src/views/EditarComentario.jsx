@@ -3,18 +3,18 @@ import { Card } from 'react-bootstrap';
 
 import { useAuthContext } from '../context/AuthContext.jsx';
 
-import FormularioEditar from '../components/FormularioEditar.jsx'
+import FormularioEditarComentario from "../components/FormularioEditarComentario.jsx";
 
 
-const Editar = () => {
+const EditarCometario = () => {
   const { token, usuario } = useAuthContext();
   const { id } = useParams();
   
   return (
     <Card.Body>
-     <FormularioEditar id={id} token={token} usuario={usuario}/>
+     <FormularioEditarComentario id={id} token={token} usuario={usuario}/>
     </Card.Body>
   )
 }
 
-export default Editar;
+export default EditarCometario;

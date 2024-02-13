@@ -4,13 +4,17 @@ import { Card, Form, Button, Alert } from 'react-bootstrap';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { guardarDatos, obtenerDatos, guardarToken, obtenerToken } from '../utils/login.js'; 
+import { useAuthContext } from '../context/AuthContext.jsx';
 
 const Login = () => {
-  const navigate = useNavigate();
+  
   const [usuario, setUsuario] = useState('');
   const [password, setPassword] = useState('');
   const [DesHabilitaButton, SetDesHabilitaButton] = useState(false);
   const [errores, setErrores] = useState({});
+  
+  const navigate = useNavigate();
+  const { login } = useAuthContext();
 
   const cambiarUsuario = (e) => {
 
@@ -58,15 +62,18 @@ const Login = () => {
           //console.log(respuesta.data);
           //return navigate('/');
           const { datos, token } = respuesta.data;
-          guardarDatos(datos);
-          guardarToken(token);
+
+          login(datos, token);
+          
+         // guardarDatos(datos);
+          //guardarToken(token);
 
           //const datosGuardado = obtenerDatos();
           //const tokenGuardado = obtenerToken();
 
           //console.log(datosGuardado);
           //console.log(tokenGuardado);
-
+          navigate('/');
         } else {
           setErrores({ error: 'Error inesperado' })
         }

@@ -1,28 +1,22 @@
-import { TraeDatosDePostPorId } from './../utils/llamando.js';
-
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Alert } from 'react-bootstrap';
 
-//import { useAuthContext } from '../context/AuthContext.jsx';
+import { useAuthContext } from '../context/AuthContext.jsx';
 
+const FormularioCrearPost = () => {
 
-const FormularioEditar = (props) => {
-  const { id, usuario, token } = props;
-  const url = 'http://localhost:3000/post';
   const navigate = useNavigate();
-  //const { token } = useAuthContext();
+  const { token } = useAuthContext();
+
   const [titulo, setTitulo] = useState('');
   const [descripcion, setDescripcion] = useState('');
   const [postFotoURL, setPostFotoURL] = useState('');
-  //const [apellido, setApellido] = useState('');
-  //const [password, setPassword] = useState('');
-
   const [DesHabilitaButton, SetDesHabilitaButton] = useState(false);
   const [errores, setErrores] = useState({});
 
@@ -39,7 +33,6 @@ const FormularioEditar = (props) => {
     setPostFotoURL(e.target.value);
   }
 
-
   /* Validar formulario*/
   const verificarDatos = async () => {
     let misErrores = {};
@@ -48,10 +41,10 @@ const FormularioEditar = (props) => {
       misErrores.titulo = 'Debe introducir al menos un titulo';
     }
     if (descripcion.length === 0) {
-      misErrores.descripcion = 'Debe introducir al menos una descripcion';
+      misErrores.descripcion = 'Debe introducir al menos una descripción';
     }
     if (postFotoURL.length === 0) {
-      misErrores.postFotoURL = 'Debe introducir al menos una descripcion';
+      misErrores.postFotoURL = 'Debe introducir al menos una la URL de foto';
     }
 
     setErrores(misErrores);
@@ -65,22 +58,20 @@ const FormularioEditar = (props) => {
     }
   }
 
-  /* Preparar datos para enviar al BackEnd*/
+  /* Preparar datos para el BackEnd*/
   const enviarDatos = async () => {
-
+    const url = 'http://localhost:3000/post';
+    const datos = {
+      titulo: titulo,
+      descripcion: descripcion,
+      postFotoURL: postFotoURL,
+    }
     const headers = {
       token: token,
     }
 
-    const datos = {
-      id: id,
-      titulo: titulo,
-      descripcion: descripcion,
-      postFotoURL: postFotoURL,
-
-    }
     try {
-      const respuesta = await axios.put(url, datos, { headers: headers });
+      const respuesta = await axios.post(url, datos, { headers: headers });
 
       if (respuesta.status === 200) {
 
@@ -98,30 +89,6 @@ const FormularioEditar = (props) => {
 
   }
 
-  const TraerDatos = async () => {
-    if (usuario) {
-      const respuesta = await TraeDatosDePostPorId(id)
-      if (respuesta) {
-        if (usuario.id !== respuesta.autor) {
-          return navigate('/'); // puede agregar vista de error
-        }
-        setTitulo(respuesta.titulo);
-        setDescripcion(respuesta.descripcion);
-        setPostFotoURL(respuesta.postFotoURL);
-
-      } else {
-        setErrores({ error: 'Error inesperado al optener la publicacion' })
-        SetDesHabilitaButton(true);
-      }
-    } else {
-      return navigate('/');
-    }
-  }
-  useEffect(() => {
-
-    TraerDatos();
-  }, [])
-
   /* Formulario de*/
   return (
 
@@ -131,7 +98,7 @@ const FormularioEditar = (props) => {
           Titulo
         </Form.Label>
         <Col sm="10">
-          <Form.Control type='text' onInput={cambiarTitulo} defaultValue={titulo} />
+          <Form.Control type='text' onInput={cambiarTitulo} />
           {
             errores.titulo && (<span style={{ color: "red" }}>{errores.titulo}</span>)
           }
@@ -141,22 +108,22 @@ const FormularioEditar = (props) => {
 
       <Form.Group as={Row} className="mb-3" controlId="formPlaintextNombre">
         <Form.Label column sm="2">
-          Descripción
+          Descripcion
         </Form.Label>
         <Col sm="10">
-          <Form.Control type='text' onInput={cambiarDescripcion} defaultValue={descripcion} />
+          <Form.Control type='text' onInput={cambiarDescripcion} />
           {
             errores.descripcion && (<span style={{ color: "red" }}>{errores.descripcion}</span>)
           }
         </Col>
       </Form.Group>
 
-      <Form.Group as={Row} className="mb-3" controlId="formPlaintextNombre">
+      <Form.Group as={Row} className="mb-3" controlId="formPlaintextApellido">
         <Form.Label column sm="2">
-          Foto Url
+          Foto Post URL
         </Form.Label>
         <Col sm="10">
-          <Form.Control type='text' onInput={cambiarPostFotoUrl} defaultValue={postFotoURL} />
+          <Form.Control type="text" onInput={cambiarPostFotoUrl} />
           {
             errores.postFotoURL && (<span style={{ color: "red" }}>{errores.postFotoURL}</span>)
           }
@@ -168,11 +135,13 @@ const FormularioEditar = (props) => {
         )
       }
 
+
       <Button variant="primary" onClick={verificarDatos} disabled={DesHabilitaButton}>Enviar</Button>
+
 
 
     </Form>
   );
 }
 
-export default FormularioEditar;
+export default FormularioCrearPost;
