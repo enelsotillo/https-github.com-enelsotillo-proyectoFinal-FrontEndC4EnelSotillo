@@ -35,6 +35,7 @@ Currently, two official plugins are available:
      <ul>
         <li>npm install react-bootstrap bootstrap</li>
         <li>npm install react-router-dom localforage match-sorter sort-by</li>
+        <li>npm i axios</li>
      </ul>
 </div>
 
